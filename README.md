@@ -32,9 +32,14 @@ yarn install
 ### Environment Variables
 Create a `.env` file in the root directory with the following variables:
 ```bash
-REACT_APP_AUTH0_DOMAIN=<your-auth0-domain>
-REACT_APP_AUTH0_CLIENT_ID=<your-auth0-client-id>
-REACT_APP_MARVEL_API_KEY=<your-marvel-api-key>
+VITE_AUTH0_DOMAIN=<your-auth0-domain>
+VITE_AUTH0_CLIENT_ID=<your-auth0-client-id>
+VITE_AUTH0_CLIENT_SECRET=<your-auth0-client-secret>
+VITE_AUTH0_AUDIENCE=<your-auth0-audience>
+VITE_SECRET_KEY=<your-secret-key-for-jwt>
+VITE_MARVEL_API_PUBLIC_KEY=<your-marvel-api-public-key>
+VITE_MARVEL_API_PRIVATE_KEY=<your-marvel-api-private-key>
+VITE_MARVEL_API_BASE_URL=<your-marvel-api-base-url>
 ```
 
 ### Start the development server
