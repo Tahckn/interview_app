@@ -17,7 +17,7 @@ function App() {
                     <CssBaseline/>
                     <ToastContainer/>
                     <Navbar/>
-                    <Container component="main" maxWidth="md" sx={{mt: 4}}>
+                    <Container component="main" maxWidth="lg" sx={{mt: 4}}>
                         <AppRoutes/>
                     </Container>
                 </ThemeProvider>

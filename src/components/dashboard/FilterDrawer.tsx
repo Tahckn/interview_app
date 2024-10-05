@@ -43,6 +43,7 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({activeTab}) => {
                         label={activeTab === 0 ? "Character Name" : "Series Title"}
                         variant="outlined"
                         margin="normal"
+                        autoFocus
                         value={localSearchTerm}
                         onChange={(e) => setLocalSearchTerm(e.target.value)}
                     />

@@ -13,14 +13,7 @@ interface SeriesTableProps {
 const columns: GridColDef[] = [
     {field: 'id', headerName: 'ID', width: 70},
     {field: 'title', headerName: 'Title', width: 200},
-    {
-        field: 'description',
-        headerName: 'Description',
-        width: 400,
-        renderCell(params) {
-            return params.row.description ?? 'N/A';
-        },
-    },
+    {field: 'description', headerName: 'Description', width: 400,},
     {
         field: 'thumbnail',
         headerName: 'Thumbnail',
@@ -113,9 +106,9 @@ const SeriesTable: React.FC<SeriesTableProps> = ({data, pagination}) => {
             columns={columns}
             rows={data}
             pagination={{
-                pageSize: pagination.limit,
                 total: pagination.total,
-                page: Math.floor(pagination.offset / pagination.limit)
+                page: Math.floor(pagination.offset / pagination.limit),
+                pageSize: pagination.limit
             }}
             onPageChange={(newPage) => setSeriesPage(newPage + 1)}
             onPageSizeChange={setSeriesPageSize}

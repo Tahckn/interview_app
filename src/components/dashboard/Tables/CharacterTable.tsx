@@ -12,6 +12,7 @@ interface CharacterTableProps {
 const CharacterTable: React.FC<CharacterTableProps> = ({data, pagination}) => {
     const {setCharacterPage, setCharacterPageSize, loading} = useMarvel();
 
+    // Define the columns for the character table
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'ID', width: 70},
         {field: 'name', headerName: 'Name', width: 200},

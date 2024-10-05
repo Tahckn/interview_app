@@ -1,6 +1,7 @@
 import React, {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import {getCharacters, getSeries} from 'services/marvelApi';
 import {Character, MarvelApiResponse, Series} from 'src/types/Marvel';
+import { useSearchParams } from 'react-router-dom';
 
 interface Pagination {
     offset: number;
@@ -30,24 +31,26 @@ interface MarvelContextType {
 const MarvelContext = createContext<MarvelContextType | undefined>(undefined);
 
 export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    // State declarations for characters, series, loading, error, search terms, and pagination
+    const [searchParams] = useSearchParams();
     const [characters, setCharacters] = useState<Character[]>([]);
     const [series, setSeries] = useState<Series[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [characterSearchTerm, setCharacterSearchTerm] = useState('');
-    const [seriesSearchTerm, setSeriesSearchTerm] = useState('');
+    const [characterSearchTerm, setCharacterSearchTerm] = useState(() => searchParams.get('characterSearch') || '');
+    const [seriesSearchTerm, setSeriesSearchTerm] = useState(() => searchParams.get('seriesSearch') || '');
     const [characterPagination, setCharacterPagination] = useState<Pagination>({
         offset: 0,
         limit: 20,
         total: 0,
     });
-
     const [seriesPagination, setSeriesPagination] = useState<Pagination>({
         offset: 0,
         limit: 20,
         total: 0,
     });
 
+    // Fetch characters from the Marvel API
     const fetchCharacters = useCallback(async () => {
         setLoading(true);
         try {
@@ -70,7 +73,7 @@ export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({childre
         }
     }, [characterPagination.offset, characterPagination.limit, characterSearchTerm]);
 
-
+    // Fetch series from the Marvel API
     const fetchSeries = useCallback(async () => {
         setLoading(true);
         try {
@@ -94,6 +97,7 @@ export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({childre
         }
     }, [seriesPagination.offset, seriesPagination.limit, seriesSearchTerm]);
 
+    // Trigger fetches when pagination or search terms change
     useEffect(() => {
         fetchCharacters();
     }, [characterPagination.offset, characterPagination.limit, characterSearchTerm]);
@@ -102,6 +106,7 @@ export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({childre
         fetchSeries();
     }, [seriesPagination.offset, seriesPagination.limit, seriesSearchTerm]);
 
+    // Pagination control functions
     const setCharacterPage = useCallback((page: number) => {
         setCharacterPagination(prev => ({
             ...prev,
@@ -123,7 +128,7 @@ export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({childre
         setSeriesPagination(prev => ({...prev, limit: pageSize, offset: 0}));
     }, []);
 
-
+    // Prepare the context value
     const value = {
         characters,
         series,
@@ -146,6 +151,7 @@ export const MarvelProvider: React.FC<{ children: React.ReactNode }> = ({childre
     return <MarvelContext.Provider value={value}>{children}</MarvelContext.Provider>;
 };
 
+// Custom hook to use the Marvel context
 export const useMarvel = () => {
     const context = useContext(MarvelContext);
     if (context === undefined) {
