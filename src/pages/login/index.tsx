@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {TextField, Button, Typography, Box, Container} from '@mui/material';
+import {Box, Button, Container, TextField, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import {getToken, getRolesFromToken, setToken} from 'services/auth';
+import {getRolesFromToken, getToken, setToken} from 'services/auth';
 import {useAppDispatch} from 'hooks/reduxHooks';
 import {login} from 'store/slices/authSlice';
 import {toast} from 'react-toastify';
@@ -18,11 +18,11 @@ const Login = () => {
             const token = await getToken(username, password);
             setToken(token);
             const roles = getRolesFromToken(token);
-            dispatch(login({roles}));
+            dispatch(login({roles, userId: username}));
             navigate('/');
         } catch (error: any) {
             if (error.error_description) {
-               toast.error(error.error_description);
+                toast.error(error.error_description);
             } else {
                 toast.error('An unknown error occurred');
             }

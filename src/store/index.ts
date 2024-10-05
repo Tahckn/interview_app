@@ -1,5 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
+import userReducer from './slices/userSlice';
 
 // Configure the Redux store
 export const store = configureStore({
@@ -7,6 +8,9 @@ export const store = configureStore({
         // Add the authReducer under the key 'auth'
         // This means all state related to authentication will be stored under state.auth
         auth: authReducer,
+        // Add the userReducer under the key 'user'
+        // This means all state related to user will be stored under state.user
+        user: userReducer,
     },
 });
 

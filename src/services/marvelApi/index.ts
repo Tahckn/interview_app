@@ -1,5 +1,6 @@
 import axios from 'axios';
 import md5 from 'md5';
+import logger from 'services/logger'; // Logger'ı import ediyoruz
 
 // Environment variables for the Marvel API keys and base URL
 const PUBLIC_KEY = import.meta.env.VITE_MARVEL_API_PUBLIC_KEY
@@ -30,8 +31,19 @@ export const getCharacters = async (params: CharacterParams = {}) => {
     if (limit !== undefined) url += `&limit=${limit}`;
     if (nameStartsWith) url += `&nameStartsWith=${encodeURIComponent(nameStartsWith)}`;
 
-    // Perform the GET request to the Marvel API and return the response
-    return axios.get(url);
+    logger.info(`Fetching Marvel characters`, { params });
+
+    try {
+        const response = await axios.get(url);
+        logger.info(`Successfully fetched Marvel characters`, { 
+            count: response.data.data.results.length,
+            total: response.data.data.total
+        });
+        return response;
+    } catch (error) {
+        logger.error(`Error fetching Marvel characters`, { error, params });
+        throw error;
+    }
 };
 
 // Interface to define the optional parameters for series queries
@@ -51,6 +63,17 @@ export const getSeries = async (params: SeriesParams = {}) => {
     if (limit !== undefined) url += `&limit=${limit}`;
     if (titleStartsWith) url += `&titleStartsWith=${encodeURIComponent(titleStartsWith)}`;
 
-    // Perform the GET request to the Marvel API and return the response
-    return axios.get(url);
+    logger.info(`Fetching Marvel series`, { params });
+
+    try {
+        const response = await axios.get(url);
+        logger.info(`Successfully fetched Marvel series`, { 
+            count: response.data.data.results.length,
+            total: response.data.data.total
+        });
+        return response;
+    } catch (error) {
+        logger.error(`Error fetching Marvel series`, { error, params });
+        throw error;
+    }
 };

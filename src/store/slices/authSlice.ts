@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {removeToken, isTokenValid} from 'services/auth';
+import {isTokenValid, removeToken} from 'services/auth';
+import logger from 'services/logger';
 
 // Define the shape of the authentication state
 interface AuthState {
@@ -22,9 +23,10 @@ const authSlice = createSlice({
         // Login action
         // Updates the state to reflect that the user is authenticated
         // and sets the user's roles
-        login: (state, action: PayloadAction<{ roles: string[] }>) => {
+        login: (state, action: PayloadAction<{ roles: string[], userId: string }>) => {
             state.isAuthenticated = true;
             state.roles = action.payload.roles;
+            logger.info(`User logged in`, {userId: action.payload.userId});
         },
         // Logout action
         // Resets the auth state and removes the authentication token
@@ -32,6 +34,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.roles = [];
             removeToken();
+            logger.info(`User logged out`);
         },
     },
 });

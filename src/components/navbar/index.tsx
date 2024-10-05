@@ -30,7 +30,7 @@ const Navbar = () => {
                 ) : (
                     <>
                         <Button color="inherit" component={NavLink} to="/user">
-                            User
+                            User / logs
                         </Button>
                         <Button color="inherit" component={NavLink} to="/admin">
                             Admin

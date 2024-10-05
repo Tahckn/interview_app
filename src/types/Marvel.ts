@@ -3,12 +3,6 @@ type Url = {
     url: string;
 }
 
-type TextObject = {
-    type: string;
-    language: string;
-    text: string;
-}
-
 type Image = {
     path: string;
     extension: string;
