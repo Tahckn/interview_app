@@ -48,3 +48,38 @@ npm start
 # or
 yarn start
 ```
+Open `http://localhost:5173` in your browser to access the application.
+
+## Usage Guide
+
+
+### Authentication
+1. Create your user in Auth0
+2. Add your local url to the allowed callback URLs, logout URLs, and web origins
+3. Add Password Grant Type to your API in Auth0 in Advanced Settings
+4. Click on the "Login" button in the top right corner
+5. Upon successful login, you'll be redirected to the dashboard
+
+### Data Visualization
+1. Navigate to the "Dashboard" tab
+2. You will see the total number of characters and series
+3. It will update depending on the filters you apply
+
+### Exploring Marvel Data
+1. Navigate to the "Dashboard" tab
+2. Apply filters to refine your search
+3. Use the pagination to navigate through the results
+
+### User Information and Logs
+1. Navigate to the "User" tab
+2. You will see your user information and logs
+
+
+
+## Screenshots
+![Login](./public/login.png)
+![Dashboard](./public/dashboard.png)
+![Dashboard](./public/dashboard-2.png)
+![User](./public/user.png)
+
+
