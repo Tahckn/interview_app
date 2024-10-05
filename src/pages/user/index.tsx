@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Typography, Avatar, Box, Container, Paper, Button} from '@mui/material';
+import {Typography, Avatar, Box, Container, Paper, Button, CircularProgress} from '@mui/material';
 import axios from 'axios';
 import {getStoredToken} from 'services/auth';
 import {logout} from 'store/slices/authSlice';
@@ -15,9 +15,11 @@ const User = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const {isAuthenticated} = useAppSelector(state => state.auth);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
+            setLoading(true);
             const token = getStoredToken();
             try {
                 const response = await axios.get(`https://${AUTH0_DOMAIN}/userinfo`, {
@@ -26,13 +28,19 @@ const User = () => {
                     }
                 });
                 setUserInfo(response.data);
-            } catch (error) {
+            } catch (error: any) {
                 toast.error('Failed to fetch user info');
                 navigate('/login');
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchUserInfo();
+        if (isAuthenticated) {
+            fetchUserInfo();
+        } else {
+            navigate('/login');
+        }
     }, [isAuthenticated, navigate]);
 
     const handleLogout = () => {
@@ -41,9 +49,30 @@ const User = () => {
     };
 
 
-    if (!userInfo) {
-        return <Typography>Yükleniyor...</Typography>;
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <CircularProgress/>
+            </Box>
+        );
     }
+
+    if (!userInfo) {
+        return (
+            <Container component="main" maxWidth="sm">
+                <Paper elevation={3} sx={{mt: 4, p: 4}}>
+                    <Typography variant="h5" gutterBottom>
+                        User Profile
+                    </Typography>
+                    <Typography variant="body1">
+                        No user information found
+                    </Typography>
+                </Paper>
+            </Container>
+        );
+
+    }
+
 
     return (
         <Container component="main" maxWidth="sm">
@@ -54,10 +83,13 @@ const User = () => {
                         User Profile
                     </Typography>
                     <Typography variant="body1" sx={{mt: 2}}>
-                        Name: {userInfo.name}
+                        Name: {userInfo.nickname}
                     </Typography>
                     <Typography variant="body1">
                         Email: {userInfo.email}
+                    </Typography>
+                    <Typography variant="body1">
+                        Email Verified: {userInfo.email_verified ? 'Yes' : 'No'}
                     </Typography>
                     <Button
                         variant="contained"

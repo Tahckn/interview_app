@@ -40,7 +40,7 @@ const Login = () => {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Giriş Yap
+                    Sign in
                 </Typography>
                 <Box component="form" onSubmit={handleLogin} noValidate sx={{mt: 1}}>
                     <TextField
@@ -48,7 +48,7 @@ const Login = () => {
                         required
                         fullWidth
                         id="username"
-                        label="Kullanıcı Adı"
+                        label="Username"
                         name="username"
                         autoComplete="username"
                         autoFocus
@@ -60,7 +60,7 @@ const Login = () => {
                         required
                         fullWidth
                         name="password"
-                        label="Şifre"
+                        label="Password"
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -73,7 +73,7 @@ const Login = () => {
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Giriş Yap
+                        Login
                     </Button>
                 </Box>
             </Box>

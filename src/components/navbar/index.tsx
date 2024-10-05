@@ -21,7 +21,7 @@ const Navbar = () => {
                     </NavLink>
                 </Typography>
                 <Button color="inherit" component={NavLink} to="/">
-                    Home
+                    Dashboard
                 </Button>
                 {!isAuthenticated ? (
                     <Button color="inherit" component={NavLink} to="/login">

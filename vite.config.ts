@@ -12,6 +12,7 @@ export default defineConfig({
             services: "/src/services",
             store: "/src/store",
             hooks: "/src/hooks",
+            types: "/src/types",
         }
     }
 })
