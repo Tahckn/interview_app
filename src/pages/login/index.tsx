@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import {getToken, getRolesFromToken, setToken} from 'services/auth';
 import {useAppDispatch} from 'hooks/reduxHooks';
 import {login} from 'store/slices/authSlice';
+import {toast} from 'react-toastify';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -17,10 +18,14 @@ const Login = () => {
             const token = await getToken(username, password);
             setToken(token);
             const roles = getRolesFromToken(token);
-            dispatch(login({ roles }));
+            dispatch(login({roles}));
             navigate('/');
-        } catch (error) {
-            console.error('Giriş başarısız:', error);
+        } catch (error: any) {
+            if (error.error_description) {
+               toast.error(error.error_description);
+            } else {
+                toast.error('An unknown error occurred');
+            }
         }
     };
 

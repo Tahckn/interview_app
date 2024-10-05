@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import CryptoJS from 'crypto-js';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
 const AUTH0_CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID;
@@ -11,6 +11,11 @@ const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 interface DecodedToken {
     exp: number;
     roles?: string[];
+}
+
+interface AuthError {
+    error: string;
+    error_description: string;
 }
 
 export const getToken = async (username: string, password: string) => {
@@ -27,8 +32,16 @@ export const getToken = async (username: string, password: string) => {
 
         return response.data.access_token;
     } catch (error) {
-        console.error('Token alınamadı:', error);
-        throw error;
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<AuthError>;
+            if (axiosError.response) {
+                throw {
+                    error: axiosError.response.data.error,
+                    error_description: axiosError.response.data.error_description
+                };
+            }
+        }
+        throw { error: 'unknown_error', error_description: 'An unknown error occurred' };
     }
 };
 

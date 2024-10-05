@@ -6,6 +6,7 @@ import {logout} from 'store/slices/authSlice';
 import {useNavigate} from 'react-router-dom';
 import type {UserInfo} from "src/types/UserInfo.ts";
 import {useAppDispatch, useAppSelector} from "hooks/reduxHooks.ts";
+import {toast} from "react-toastify";
 
 const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
 
@@ -26,7 +27,7 @@ const User = () => {
                 });
                 setUserInfo(response.data);
             } catch (error) {
-                console.error('User info fetch error:', error);
+                toast.error('Failed to fetch user info');
                 navigate('/login');
             }
         };
